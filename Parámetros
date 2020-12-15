@@ -1,0 +1,48 @@
+Parámetros Árbol
+
+%%time
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score,precision_score, balanced_accuracy_score
+
+
+def _score_func(estimator, X, y):
+  y_pred_test = estimator.predict(X)
+  return balanced_accuracy_score(y, y_pred_test)
+
+
+class Class_Fit(object):
+    def __init__(self, clf, params=None):
+        if params:            
+            self.clf = clf(**params)
+        else:
+            self.clf = clf()
+
+    def train(self, x_train, y_train):
+        self.clf.fit(x_train, y_train)
+
+    def predict(self, x):
+        return self.clf.predict(x)
+    
+    def grid_search(self, parameters, Kfold):
+        self.grid = GridSearchCV(estimator = self.clf, param_grid = parameters, cv = Kfold,scoring=_score_func)
+        
+    def grid_fit(self, X, Y):
+        self.grid.fit(X, Y)
+        
+    def grid_predict(self, X, Y):
+        self.predictions = self.grid.predict(X)
+        print("Precision: {:.2f} % ".format(100*metrics.balanced_accuracy_score(Y, self.predictions)))
+
+from sklearn.model_selection import GridSearchCV
+# Se utiliza gridsearch como modelo de selección para determinar los mejores parametros en XGBoost
+
+
+modelo1.fit(X_train, y_train)
+gb = Class_Fit(clf = tree.DecisionTreeClassifier)
+param_grid = {
+             'criterion':['entropy','gini'],
+             'max_depth':[3,4,5,10,20],
+             'min_samples_leaf':[5,11,3]
+             }
+gb.grid_search(parameters = param_grid, Kfold = 4)
+gb.grid_fit(X = X_train, Y = y_train)
