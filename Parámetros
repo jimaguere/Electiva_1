@@ -175,3 +175,8 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('Area bajo la curva ROC para el modelo XGBoost')
 plt.show()
+
+
+from sklearn.externals import joblib
+joblib.dump(clf, 'clf.pkl') 
+
