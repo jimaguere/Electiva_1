@@ -155,3 +155,23 @@ kflods = 4
 ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo_final_xgb)
 display(ab_vec)
 print('Promedio modelo RF:', sum(ab_vec)/len(ab_vec)) 
+
+
+Curva ROC
+
+from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, auc
+plt.figure(figsize = (8,8))
+i=1
+y_pred_proba = modelo_final_rf.predict_proba(X_test)[::,i]
+#y_pred_proba= modelo_final_rf.predict(X_test)
+# Elejimos punto de corte para encontrar la mayor area bajo la curva
+#y_pred_proba = [1 if x >= 0.49 else 0 for x in y_pred_proba]
+fpr, tpr, _ = roc_curve(y_test,  y_pred_proba, pos_label=1)
+auc = roc_auc_score(y_test, y_pred_proba)
+plt.plot(fpr,tpr, lw=2,label=f"Clase {i}, auc="+str(auc))
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+plt.legend(loc=4)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Area bajo la curva ROC para el modelo XGBoost')
+plt.show()
