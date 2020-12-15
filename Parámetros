@@ -87,7 +87,6 @@ param_grid = {
               'max_features':['auto', 'sqrt', 'log2'],
               'class_weight':['balanced', 'balanced_subsample']
              }
-
 gb.grid_search(parameters = param_grid, Kfold = 4)
 gb.grid_fit(X = X_train, Y = y_train)
 
@@ -113,4 +112,46 @@ param_grid = {
 gb.grid_search(parameters = param_grid, Kfold = 5)
 gb.grid_fit(X = X_train, Y = y_train)
 
+--------------
+#mejor Modelo árbol
+param_arbol={'criterion': 'entropy', 'max_depth': 3,
+             'min_impurity_decrease': 0.025, 'min_samples_leaf': 5, 'min_samples_split': 2, 'splitter': 'best'}
 
+modelo_final_arbol=tree.DecisionTreeClassifier(**param_arbol)
+modelo_final_arbol.fit(X_train, y_train)
+
+param_rf={'class_weight': 'balanced_subsample', 'criterion': 'entropy',
+'max_depth': 10, 'max_features': 'sqrt', 'min_impurity_decrease': 0.025, 'min_samples_leaf': 11, 'min_samples_split': 10, 'n_estimators': 100}
+
+modelo_final_rf=RandomForestClassifier(**param_rf)
+modelo_final_rf.fit(X_train, y_train)
+
+param_xgb={'alpha': 0.003, 'booster': 'gbtree', 'eta': 0.03, 'gamma': 5, 'max_depth': 3,
+'min_child_weight': 0.5, 'n_estimators': 500, 'n_job': -1, 'objective': 'binary:logistic', 'scale_pos_weight': 23.74074074074074}
+
+modelo_final_xgb=XGBClassifier(**param_xgb)
+modelo_final_xgb.fit(X_train, y_train)
+
+
+------------------
+
+print("Modelo A")
+eval_model(X_test,X_train,y_test,y_train,modelo_final_arbol)
+kflods = 4
+ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo_final_arbol)
+display(ab_vec)
+print('Promedio modelo A:', sum(ab_vec)/len(ab_vec)) 
+print("_________________________________________")
+print("Modelo RF")
+eval_model(X_test,X_train,y_test,y_train,modelo_final_rf)
+kflods = 4
+ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo_final_rf)
+display(ab_vec)
+print('Promedio modelo RF:', sum(ab_vec)/len(ab_vec)) 
+print("_________________________________________")
+print("Modelo XGB")
+eval_model(X_test,X_train,y_test,y_train,modelo_final_xgb)
+kflods = 4
+ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo_final_xgb)
+display(ab_vec)
+print('Promedio modelo RF:', sum(ab_vec)/len(ab_vec)) 
