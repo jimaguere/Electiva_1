@@ -91,3 +91,5 @@ param_grid = {
 gb.grid_search(parameters = param_grid, Kfold = 4)
 gb.grid_fit(X = X_train, Y = y_train)
 
+#Parámetros Randomforest: {'class_weight': 'balanced_subsample', 'criterion': 'entropy', 'max_depth': 10, 'max_features': 'log2', 'min_impurity_decrease': 0.025, 'min_samples_leaf': 11, 'min_samples_split': 2, 'n_estimators': 100}
+
