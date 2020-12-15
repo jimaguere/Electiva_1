@@ -1,3 +1,26 @@
+Validación cruzada
+
+from sklearn.model_selection import StratifiedKFold
+def validacion_cruzada(x_train,y_train,kfolds,model):
+    cv = StratifiedKFold(n_splits=kfolds,shuffle=False)
+    prom=[]
+    for train,test in cv.split(x_train,y_train):
+    
+        modelo=model.fit(x_train.iloc[train],y_train.iloc[train])
+        prom.append(eval_model(x_train.iloc[test],x_train.iloc[train] ,y_train.iloc[test],y_train.iloc[train],modelo))
+
+    return(prom)  
+
+# Se realiza validación cruzada pasando cuantas particiones del conjuto de datos quiere entrenar
+kflods = 4
+ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo1)
+
+print('-------------------------')
+display(ab_vec)
+print('-------------------------')
+print('Promedio', sum(ab_vec)/len(ab_vec)) 
+
+
 Parámetros Árbol
 
 %%time
@@ -46,3 +69,7 @@ param_grid = {
              }
 gb.grid_search(parameters = param_grid, Kfold = 4)
 gb.grid_fit(X = X_train, Y = y_train)
+
+print("Parámetros árbol:",gb.grid.best_params_)
+mejor_arbol=gb.grid.best_estimator_
+
