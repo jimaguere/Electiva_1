@@ -74,3 +74,20 @@ gb.grid_fit(X = X_train, Y = y_train)
 print("Parámetros árbol:",gb.grid.best_params_)
 mejor_arbol=gb.grid.best_estimator_
 
+Parámetros RandomForest
+
+gb = Class_Fit(clf = RandomForestClassifier)
+param_grid = {
+             'criterion':['entropy','gini'],
+             'max_depth':[3,4,5,10,20],
+             'min_samples_leaf':[5,11,3,1],
+             'min_impurity_decrease':[0,0.025,0.0025],
+             'min_samples_split':[2,4,10],
+             'n_estimators':[100],
+              'max_features':['auto', 'sqrt', 'log2'],
+              'class_weight':['balanced', 'balanced_subsample']
+             }
+
+gb.grid_search(parameters = param_grid, Kfold = 4)
+gb.grid_fit(X = X_train, Y = y_train)
+
