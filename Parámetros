@@ -17,8 +17,9 @@ ab_vec=validacion_cruzada(X_train,y_train, kflods, modelo1)
 
 print('-------------------------')
 display(ab_vec)
-print('-------------------------')
 print('Promedio', sum(ab_vec)/len(ab_vec)) 
+print('-------------------------')
+
 
 
 Parámetros Árbol
