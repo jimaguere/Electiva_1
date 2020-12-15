@@ -93,3 +93,24 @@ gb.grid_fit(X = X_train, Y = y_train)
 
 #Parámetros Randomforest: {'class_weight': 'balanced_subsample', 'criterion': 'entropy', 'max_depth': 10, 'max_features': 'log2', 'min_impurity_decrease': 0.025, 'min_samples_leaf': 11, 'min_samples_split': 2, 'n_estimators': 100}
 
+
+Parámetros XGBOOST
+
+# Se utiliza gridsearch como modelo de selección para determinar los mejores parametros en XGBoost
+gb = Class_Fit(clf = XGBClassifier)
+param_grid = {
+             'objective':['binary:logistic'],
+             'n_estimators' : [500],
+              'eta':[0.03,0.003],    
+              'gamma':[0.03,0.003,5],
+              'max_depth':[5,10],
+              'min_child_weight':[0.5,5],
+              'alpha':[0.003,0.03],
+              'scale_pos_weight':[y_train[y_train==0].count()/y_train[y_train==1].count(),0.5],
+              'n_job':[-1],
+              'booster':['gblinear','gbtree'],  
+             }
+gb.grid_search(parameters = param_grid, Kfold = 5)
+gb.grid_fit(X = X_train, Y = y_train)
+
+
